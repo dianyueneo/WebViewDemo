@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
@@ -57,6 +61,10 @@ public class X5WebViewActivity extends AppCompatActivity {
 
     private void init() {
 
+        String name = getIntent().getStringExtra("name");
+        TextView tv_title = findViewById(R.id.tv_title);
+        tv_title.setText(name);
+
         mViewParent = findViewById(R.id.webView1);
         findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +75,14 @@ public class X5WebViewActivity extends AppCompatActivity {
 
         mWebView = WebViewManager.getInstance().get(mIntentUrl.toString());
         mWebView.attach(this);
+
+        if(mIntentUrl.toString().equals(mWebView.getLoadedUrl())){
+            loadWebView();
+        } else  {
+            TextView tv_name = findViewById(R.id.tv_name);
+            tv_name.setText(name);
+        }
+
         mWebView.loadUrl(mIntentUrl.toString());
 
         mWebView.setWebViewClient(new WebViewClient(){
@@ -80,11 +96,16 @@ public class X5WebViewActivity extends AppCompatActivity {
                 super.onPageFinished(webView, s);
                 handler.sendEmptyMessage(Msg_What_loadWebView);
             }
+
+
+            @Override
+            public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
+                super.onReceivedError(webView, webResourceRequest, webResourceError);
+                mWebView.onReceivedError();
+            }
         });
 
-        if(mIntentUrl.toString().equals(mWebView.getOriginalUrl())){
-            loadWebView();
-        }
+
 
     }
 

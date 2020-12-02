@@ -5,12 +5,6 @@ import android.content.MutableContextWrapper;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-
-import com.tencent.smtt.export.external.interfaces.JsResult;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
-
 import java.util.HashMap;
 
 class WebViewManager {
@@ -41,7 +35,7 @@ class WebViewManager {
 
     private void createWebView(String key){
 
-        Log.i("test", "create X5WebView");
+        Log.i("WebViewManager", "create X5WebView");
 
         MutableContextWrapper contextWrapper = new MutableContextWrapper(context);
         X5WebView mWebView = new X5WebView(contextWrapper);
@@ -53,7 +47,7 @@ class WebViewManager {
     public X5WebView get(String url){
 
         for (String s : maps.keySet()) {
-            Log.i("test", "webview: " + s);
+            Log.i("WebViewManager", "webview: " + s);
         }
 
         X5WebView targetWebView = maps.get(url);

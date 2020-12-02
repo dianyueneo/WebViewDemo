@@ -41,9 +41,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_3:
                 Intent intent3 = new Intent(this, X5WebViewActivity.class);
                 intent3.putExtra("url", "http://mc.vip.qq.com/demo/indexv3");
+                intent3.putExtra("name", "吉野家");
                 startActivity(intent3);
                 break;
             case R.id.btn_4:
+                Intent intent4 = new Intent(this, X5WebViewActivity.class);
+                intent4.putExtra("url", "http://www.baidu.com");
+                intent4.putExtra("name", "百度");
+                startActivity(intent4);
                 break;
             default:
                 break;

@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
 import com.tencent.smtt.export.external.interfaces.JsResult;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
@@ -18,6 +20,7 @@ class X5WebView extends WebView {
 
     private int i;//当前使用次数
     private Context context;
+    private String loadedUrl;
 
     public X5WebView(Context context) {
         super(context);
@@ -87,7 +90,13 @@ class X5WebView extends WebView {
             @Override
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
-                Log.i("test", "onPageFinished: ");
+                Log.i("WebViewManager", "onPageFinished: ");
+            }
+
+            @Override
+            public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
+                super.onReceivedError(webView, webResourceRequest, webResourceError);
+                X5WebView.this.onReceivedError();
             }
         });
 
@@ -104,14 +113,15 @@ class X5WebView extends WebView {
 
             @Override
             public void onProgressChanged(WebView webView, int progress) {
-                Log.i("test", "progress: " + progress);
+                Log.i("WebViewManager", "progress: " + progress);
             }
         });
     }
 
     @Override
     public void loadUrl(String s) {
-        if(!s.equals(this.getOriginalUrl())){
+        if(!s.equals(loadedUrl)){
+            loadedUrl = s;
             super.loadUrl(s);
         }
     }
@@ -144,5 +154,13 @@ class X5WebView extends WebView {
 
     public void resetTimes(){
         i = 0;
+    }
+
+    public String getLoadedUrl(){
+        return loadedUrl;
+    }
+
+    public void onReceivedError(){
+        loadedUrl = null;
     }
 }
