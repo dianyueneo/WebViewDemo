@@ -30,15 +30,15 @@
             android:process=":remote" />
         <activity
             android:name=".EmptyWebviewActivity"
-            android:process=":smallprogram" />
+            android:process=":applet" />
         <activity
             android:name=".X5WebViewActivity"
-            android:process=":smallprogram" />
+            android:process=":applet" />
 
         <service
             android:name=".X5InitService"
             android:exported="false"
-            android:process=":smallprogram" />
+            android:process=":applet" />
 
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
