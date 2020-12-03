@@ -2,6 +2,8 @@ package com.wiseasy.webviewdemo;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -37,8 +39,10 @@ public class X5InitService extends IntentService {
             public void onViewInitFinished(boolean arg0) {
                 // TODO Auto-generated method stub
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-                Log.i("WebViewManager", " onViewInitFinished is " + arg0);
-                WebViewManager.getInstance().preLoad();
+                Log.i("WebViewManager", "x5 onViewInitFinished is " + arg0);
+                if(arg0){
+                    WebViewManager.getInstance().preLoad();
+                }
             }
 
             @Override
@@ -49,8 +53,13 @@ public class X5InitService extends IntentService {
         //x5内核初始化接口
         QbSdk.initX5Environment(getApplicationContext(),  cb);
 
-
-
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                WebViewManager.getInstance().preLoad();
+            }
+        });
 
     }
 }

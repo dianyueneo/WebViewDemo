@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_5:
                 Intent intent5 = new Intent(this, X5WebViewActivity.class);
-                intent5.putExtra("url", "https://new.qq.com/omn/20201202/20201202A04JPJ00.html");
-                intent5.putExtra("name", "周冬雨");
+                intent5.putExtra("url", "file:///android_asset/aidl.html");
+                intent5.putExtra("name", "AIDL测试");
                 startActivity(intent5);
                 break;
             case R.id.btn_6:

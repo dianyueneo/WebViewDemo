@@ -1,6 +1,5 @@
 package com.wiseasy.webviewdemo;
 
-import android.content.Context;
 import android.content.MutableContextWrapper;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -11,24 +10,28 @@ class WebViewManager {
 
     private static final String PreLoad = "PreLoad";
     private static final int MaxSize = 2;
-    private static WebViewManager manager;
     private HashMap<String, X5WebView> maps = new HashMap<>(MaxSize);//复用池
-    private Context context = BaseApplication.context;
 
     private WebViewManager(){}
 
-    public  static WebViewManager getInstance(){
-        if(manager == null){
-            manager = new WebViewManager();
-        }
-        return manager;
+    private static class Holder{
+        private static final WebViewManager instance = new WebViewManager();
+    }
+
+    public static WebViewManager getInstance(){
+        return Holder.instance;
     }
 
     /**
-     * 预加载
+     * 预加载, 如果x5没有初始化成功则生成原生webview
+     * 如果预加载的原生webview没有使用则删除
      */
     public void preLoad(){
         if(maps.size() < MaxSize){
+            if(maps.get(PreLoad) != null){
+                Log.i("WebViewManager", "remove unused WebView");
+                maps.remove(PreLoad);
+            }
             createWebView(PreLoad);
         }
     }
@@ -37,8 +40,7 @@ class WebViewManager {
 
         Log.i("WebViewManager", "create X5WebView");
 
-        MutableContextWrapper contextWrapper = new MutableContextWrapper(context);
-        X5WebView mWebView = new X5WebView(contextWrapper);
+        X5WebView mWebView = new X5WebView(new MutableContextWrapper(MyApplication.context));
 
         maps.put(key, mWebView);
 

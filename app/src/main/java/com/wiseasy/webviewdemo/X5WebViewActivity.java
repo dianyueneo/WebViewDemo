@@ -3,13 +3,14 @@ package com.wiseasy.webviewdemo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -17,10 +18,11 @@ import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+import com.wiseasy.weblib.CommandDispatcher;
 
 import java.net.URL;
 
-public class X5WebViewActivity extends AppCompatActivity {
+public class X5WebViewActivity extends AppCompatActivity{
 
     private static final int Msg_What_loadWebView = 1;
 
@@ -57,6 +59,7 @@ public class X5WebViewActivity extends AppCompatActivity {
 
         init();
 
+        CommandDispatcher.getInstance().init();
     }
 
     private void init() {
@@ -76,7 +79,7 @@ public class X5WebViewActivity extends AppCompatActivity {
         mWebView = WebViewManager.getInstance().get(mIntentUrl.toString());
         mWebView.attach(this);
 
-        if(mIntentUrl.toString().equals(mWebView.getLoadedUrl())){
+        if(mIntentUrl.toString().equals(mWebView.getLoadedUrl()) && mWebView.isLoadFinished()){
             loadWebView();
         } else  {
             TextView tv_name = findViewById(R.id.tv_name);
@@ -105,7 +108,17 @@ public class X5WebViewActivity extends AppCompatActivity {
             }
         });
 
+        mWebView.addJavascriptInterface(new JsRemoteInterface(), "webview");
 
+    }
+
+    public final class JsRemoteInterface {
+
+        @SuppressLint("JavascriptInterface")
+        @JavascriptInterface
+        public void post(String cmd, String param){
+            CommandDispatcher.getInstance().exec(X5WebViewActivity.this, cmd, param, mWebView);
+        }
 
     }
 
@@ -120,4 +133,5 @@ public class X5WebViewActivity extends AppCompatActivity {
         super.onDestroy();
         mWebView.detach();
     }
+
 }

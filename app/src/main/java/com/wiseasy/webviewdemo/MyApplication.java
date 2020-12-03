@@ -3,19 +3,15 @@ package com.wiseasy.webviewdemo;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import androidx.multidex.MultiDexApplication;
+
+import com.wiseasy.weblib.BaseApplication;
 
 
-public class BaseApplication extends MultiDexApplication {
-
-    public static Context context;
-
+public class MyApplication extends BaseApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        context = this;
 
         if(getPackageName().equals(getProcName())){
             preInitX5Core();
