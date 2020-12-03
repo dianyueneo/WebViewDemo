@@ -10,9 +10,9 @@ import java.util.HashMap;
 class WebViewManager {
 
     private static final String PreLoad = "PreLoad";
-    private static final int MaxSize = 5;
+    private static final int MaxSize = 2;
     private static WebViewManager manager;
-    private HashMap<String, X5WebView> maps = new HashMap<>(5);//复用池
+    private HashMap<String, X5WebView> maps = new HashMap<>(MaxSize);//复用池
     private Context context = BaseApplication.context;
 
     private WebViewManager(){}

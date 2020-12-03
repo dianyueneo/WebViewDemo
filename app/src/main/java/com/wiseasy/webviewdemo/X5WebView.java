@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.MutableContextWrapper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
 import com.tencent.smtt.export.external.interfaces.JsResult;
@@ -80,6 +81,14 @@ class X5WebView extends WebView {
         if(x5WebViewExtension != null){
             x5WebViewExtension.setScrollBarFadingEnabled(false);
         }
+
+        //屏蔽长按事件
+        this.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
 
         this.setWebViewClient(new WebViewClient(){
             @Override

@@ -26,7 +26,7 @@ public class X5InitService extends IntentService {
         Log.i("WebViewManager", " X5InitService init ");
 
         // 在调用TBS初始化、创建WebView之前进行如下配置
-        HashMap map = new HashMap();
+        HashMap map = new HashMap(2);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
         QbSdk.initTbsSettings(map);

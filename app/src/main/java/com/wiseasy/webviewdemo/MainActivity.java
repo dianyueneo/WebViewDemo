@@ -18,11 +18,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btn_2= findViewById(R.id.btn_2);
         Button btn_3= findViewById(R.id.btn_3);
         Button btn_4= findViewById(R.id.btn_4);
+        Button btn_5= findViewById(R.id.btn_5);
+        Button btn_6= findViewById(R.id.btn_6);
+        Button btn_7= findViewById(R.id.btn_7);
 
         btn_1.setOnClickListener(this);
         btn_2.setOnClickListener(this);
         btn_3.setOnClickListener(this);
         btn_4.setOnClickListener(this);
+        btn_5.setOnClickListener(this);
+        btn_6.setOnClickListener(this);
+        btn_7.setOnClickListener(this);
 
     }
 
@@ -49,6 +55,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent4.putExtra("url", "http://www.baidu.com");
                 intent4.putExtra("name", "百度");
                 startActivity(intent4);
+                break;
+            case R.id.btn_5:
+                Intent intent5 = new Intent(this, X5WebViewActivity.class);
+                intent5.putExtra("url", "https://new.qq.com/omn/20201202/20201202A04JPJ00.html");
+                intent5.putExtra("name", "周冬雨");
+                startActivity(intent5);
+                break;
+            case R.id.btn_6:
+                Intent intent6 = new Intent(this, X5WebViewActivity.class);
+                intent6.putExtra("url", "https://new.qq.com/rain/a/20201202A06V2A00");
+                intent6.putExtra("name", "人民日报");
+                startActivity(intent6);
+                break;
+            case R.id.btn_7:
+                Intent intent7 = new Intent(this, X5WebViewActivity.class);
+                intent7.putExtra("url", "https://new.qq.com/rain/a/20201201A0FE3W00");
+                intent7.putExtra("name", "侠客岛");
+                startActivity(intent7);
                 break;
             default:
                 break;
