@@ -1,4 +1,4 @@
-package com.wiseasy.webviewdemo;
+package com.wiseasy.weblib.webview;
 
 import android.app.IntentService;
 import android.content.Intent;

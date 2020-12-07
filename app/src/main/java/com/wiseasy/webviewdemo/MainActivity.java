@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.wiseasy.weblib.WiseasySmallProgram;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -45,34 +47,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent2);
                 break;
             case R.id.btn_3:
-                Intent intent3 = new Intent(this, X5WebViewActivity.class);
-                intent3.putExtra("url", "http://mc.vip.qq.com/demo/indexv3");
-                intent3.putExtra("name", "吉野家");
-                startActivity(intent3);
+                WiseasySmallProgram.start(this, "http://mc.vip.qq.com/demo/indexv3", "吉野家");
                 break;
             case R.id.btn_4:
-                Intent intent4 = new Intent(this, X5WebViewActivity.class);
-                intent4.putExtra("url", "http://www.baidu.com");
-                intent4.putExtra("name", "百度");
-                startActivity(intent4);
+                WiseasySmallProgram.start(this, "http://www.baidu.com", "百度");
                 break;
             case R.id.btn_5:
-                Intent intent5 = new Intent(this, X5WebViewActivity.class);
-                intent5.putExtra("url", "file:///android_asset/aidl.html");
-                intent5.putExtra("name", "AIDL测试");
-                startActivity(intent5);
+                WiseasySmallProgram.start(this, "file:///android_asset/aidl.html", "AIDL测试");
                 break;
             case R.id.btn_6:
-                Intent intent6 = new Intent(this, X5WebViewActivity.class);
-                intent6.putExtra("url", "https://new.qq.com/rain/a/20201202A06V2A00");
-                intent6.putExtra("name", "人民日报");
-                startActivity(intent6);
+                WiseasySmallProgram.start(this, "https://new.qq.com/rain/a/20201202A06V2A00", "人民日报");
                 break;
             case R.id.btn_7:
-                Intent intent7 = new Intent(this, X5WebViewActivity.class);
-                intent7.putExtra("url", "https://new.qq.com/rain/a/20201201A0FE3W00");
-                intent7.putExtra("name", "侠客岛");
-                startActivity(intent7);
+                WiseasySmallProgram.start(this, "https://new.qq.com/rain/a/20201201A0FE3W00", "侠客岛");
                 break;
             default:
                 break;

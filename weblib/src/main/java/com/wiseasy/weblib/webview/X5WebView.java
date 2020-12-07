@@ -1,16 +1,17 @@
-package com.wiseasy.webviewdemo;
+package com.wiseasy.weblib.webview;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.MutableContextWrapper;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
-import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -18,9 +19,10 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.wiseasy.weblib.JsRemoteCallback;
+import com.wiseasy.weblib.BaseApplication;
+import com.wiseasy.weblib.JsResponseCallback;
 
-class X5WebView extends WebView implements JsRemoteCallback {
+class X5WebView extends WebView implements JsResponseCallback {
 
     private int i;//当前使用次数
     private Context context;
@@ -97,7 +99,7 @@ class X5WebView extends WebView implements JsRemoteCallback {
         }
 
         //屏蔽长按事件
-        this.setOnLongClickListener(new OnLongClickListener() {
+        this.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 return true;
@@ -124,16 +126,6 @@ class X5WebView extends WebView implements JsRemoteCallback {
         });
 
         this.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsConfirm(WebView webView, String s, String s1, JsResult jsResult) {
-                return super.onJsConfirm(webView, s, s1, jsResult);
-            }
-
-            @Override
-            public boolean onJsAlert(WebView webView, String s, String s1, JsResult jsResult) {
-                return super.onJsAlert(webView, s, s1, jsResult);
-            }
-
             @Override
             public void onProgressChanged(WebView webView, int progress) {
                 Log.i("WebViewManager", "progress: " + progress);
@@ -166,7 +158,7 @@ class X5WebView extends WebView implements JsRemoteCallback {
 
     public void detach() {
         MutableContextWrapper ct = (MutableContextWrapper) this.getContext();
-        ct.setBaseContext(MyApplication.context);
+        ct.setBaseContext(BaseApplication.context);
     }
 
     public void addUseTimes() {
@@ -193,8 +185,22 @@ class X5WebView extends WebView implements JsRemoteCallback {
         return loadFinished;
     }
 
+
+    Handler handler = new Handler(Looper.getMainLooper());
+
     @Override
-    public void handleCallback(String response) {
+    public void handleCallback(final String response) {
+        Log.i("WebViewManager", "js 返回结果：" + response);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                dealResponse(response);
+            }
+        });
+
+    }
+
+    private void dealResponse(String response) {
         if(!TextUtils.isEmpty(response)){
             String trigger = "javascript:" + "dj.callback" + "(" + response + ")";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

@@ -15,8 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -25,26 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CashPayActivity"/>
         <activity
             android:name=".EmptyActivity"
             android:process=":remote" />
         <activity
             android:name=".EmptyWebviewActivity"
             android:process=":applet" />
-        <activity
-            android:name=".X5WebViewActivity"
-            android:process=":applet" />
-
-        <service
-            android:name=".X5InitService"
-            android:exported="false"
-            android:process=":applet" />
-
-        <service
-            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
-            android:label="dexopt"
-            android:process=":dexopt" >
-        </service>
 
     </application>
 

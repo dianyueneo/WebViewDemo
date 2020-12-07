@@ -36,7 +36,8 @@ dj.post = function(cmd,para){
         message.para = para || {};
         window.webview.post(message);
     }else if(window.dj.os.isAndroid){
-        window.webview.post(cmd,JSON.stringify(para));
+        window.webview.post(cmd,JSON.stringify(para));//有问题的代码
+//        window.webview.post(cmd,JSON.stringify(para) + (new Date()).getTime());//正常的代码
     }
 };
 dj.postWithCallback = function(cmd,para,callback,ud){

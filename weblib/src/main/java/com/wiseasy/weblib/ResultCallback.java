@@ -1,5 +1,5 @@
 package com.wiseasy.weblib;
 
-public interface JsRemoteCallback {
+public interface ResultCallback {
     void handleCallback(String response);
 }

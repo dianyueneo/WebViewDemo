@@ -4,8 +4,21 @@
 
     <application>
         <service
-            android:name=".MainProHandleRemoteService"
+            android:name=".MainProcessHandleRemoteService"
             android:exported="false" />
+
+        <activity
+            android:name="com.wiseasy.weblib.webview.X5WebViewActivity"
+            android:process=":applet" />
+
+        <service
+            android:name="com.wiseasy.weblib.webview.X5InitService"
+            android:exported="false"
+            android:process=":applet" />
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt"></service>
     </application>
 
 </manifest>

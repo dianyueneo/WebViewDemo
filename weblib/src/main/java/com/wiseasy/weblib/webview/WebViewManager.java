@@ -1,9 +1,12 @@
-package com.wiseasy.webviewdemo;
+package com.wiseasy.weblib.webview;
 
 import android.content.MutableContextWrapper;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import com.wiseasy.weblib.BaseApplication;
+
 import java.util.HashMap;
 
 class WebViewManager {
@@ -40,7 +43,7 @@ class WebViewManager {
 
         Log.i("WebViewManager", "create X5WebView");
 
-        X5WebView mWebView = new X5WebView(new MutableContextWrapper(MyApplication.context));
+        X5WebView mWebView = new X5WebView(new MutableContextWrapper(BaseApplication.context));
 
         maps.put(key, mWebView);
 

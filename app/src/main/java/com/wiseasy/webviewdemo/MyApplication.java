@@ -1,10 +1,9 @@
 package com.wiseasy.webviewdemo;
 
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-
 import com.wiseasy.weblib.BaseApplication;
+import com.wiseasy.weblib.WiseasySmallProgram;
+import com.wiseasy.webviewdemo.commands.MainProcessCommands;
+import com.wiseasy.webviewdemo.commands.WebViewProcessCommands;
 
 
 public class MyApplication extends BaseApplication {
@@ -13,26 +12,12 @@ public class MyApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
 
-        if(getPackageName().equals(getProcName())){
-            preInitX5Core();
-        }
+        WiseasySmallProgram.init(this);
+        WiseasySmallProgram.registMainProcessCommands(this, new MainProcessCommands());
+        WiseasySmallProgram.registWebViewProcessCommands(this, new WebViewProcessCommands());
 
     }
 
-    private void preInitX5Core() {
-        Intent intent = new Intent(this, X5InitService.class);
-        startService(intent);
-    }
 
-    public String getProcName() {
-        String procName = null;
-        int pid = android.os.Process.myPid();
-        ActivityManager mActivityManager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo appProcess : mActivityManager.getRunningAppProcesses()) {
-            if (appProcess.pid == pid) {
-                procName = appProcess.processName;
-            }
-        }
-        return procName;
-    }
+
 }

@@ -1,13 +1,15 @@
-package com.wiseasy.webviewdemo;
+package com.wiseasy.weblib.webview;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -19,6 +21,7 @@ import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.wiseasy.weblib.CommandDispatcher;
+import com.wiseasy.weblib.R;
 
 import java.net.URL;
 
@@ -45,7 +48,7 @@ public class X5WebViewActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i("WebViewManager", "X5WebViewActivity onCreate "+ X5WebViewActivity.this);
         setContentView(R.layout.activity_web_view);
 
         Intent intent = getIntent();
@@ -59,7 +62,7 @@ public class X5WebViewActivity extends AppCompatActivity{
 
         init();
 
-        CommandDispatcher.getInstance().init();
+        CommandDispatcher.getInstance().init(this);
     }
 
     private void init() {
@@ -86,11 +89,10 @@ public class X5WebViewActivity extends AppCompatActivity{
             tv_name.setText(name);
         }
 
-        mWebView.loadUrl(mIntentUrl.toString());
-
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, String s) {
+                Log.i("WebViewManager", "shouldOverrideUrlLoading: " + s);
                 return false;
             }
 
@@ -108,16 +110,38 @@ public class X5WebViewActivity extends AppCompatActivity{
             }
         });
 
-        mWebView.addJavascriptInterface(new JsRemoteInterface(), "webview");
+        mWebView.removeJavascriptInterface("webview");
+
+        mWebView.addJavascriptInterface(new JsRemoteInterface(this), "webview");
+
+        mWebView.loadUrl(mIntentUrl.toString());
 
     }
 
     public final class JsRemoteInterface {
 
+        private Context context;
+
+        public JsRemoteInterface(Context context) {
+            this.context = context;
+            Log.i("WebViewManager", "JsRemoteInterface : "+ context);
+        }
+
+        //此方法在JavaBridge线程运行
         @SuppressLint("JavascriptInterface")
         @JavascriptInterface
-        public void post(String cmd, String param){
-            CommandDispatcher.getInstance().exec(X5WebViewActivity.this, cmd, param, mWebView);
+        public void post(final String action, final String param){
+            Log.i("WebViewManager", "JsRemoteInterface post: "+ context);
+            dealAction(action, param);
+        }
+
+        private void dealAction(final String action, final String param) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    CommandDispatcher.getInstance().exec(context, action, param, mWebView);
+                }
+            });
         }
 
     }
@@ -132,6 +156,7 @@ public class X5WebViewActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         mWebView.detach();
+        Log.i("WebViewManager", "X5WebViewActivity onDestroy "+ X5WebViewActivity.this);
     }
 
 }

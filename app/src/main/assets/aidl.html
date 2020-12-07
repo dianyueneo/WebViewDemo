@@ -35,15 +35,15 @@
         });
     }
 
-    function callAppDataProvider() {
-        dj.postWithCallback("appDataProvider", {type: "account"}, function(res) {
+    function callAppPay() {
+        dj.postWithCallback("pay", {amount: "100"}, function(res) {
             dj.post("showToast", {message: JSON.stringify(res)});
         });
     }
 </script>
 <div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppToast()">调用: showToast</div>
 <div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppDialog()">调用: showDialog</div>
-<div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppDataProvider()">调用: appDataProvider</div>
+<div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppPay()">调用: pay</div>
 <script src="js/dj.js" charset="utf-8"></script>
 </body>
 </html>

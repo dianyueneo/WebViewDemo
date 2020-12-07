@@ -10,7 +10,6 @@ import android.os.RemoteException;
 public class RemoteWebBinder {
 
     private RemoteWebBinder(){
-        connectBinderService();
     }
 
     private static class Holder{
@@ -25,8 +24,8 @@ public class RemoteWebBinder {
 
     private IWebAidlInterface webAidlInterface;
 
-    private void connectBinderService(){
-        Intent intent = new Intent(BaseApplication.context, MainProHandleRemoteService.class);
+    public void connectBinderService(){
+        Intent intent = new Intent(BaseApplication.context, MainProcessHandleRemoteService.class);
         BaseApplication.context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
