@@ -3,10 +3,6 @@ package com.wiseasy.weblib.webview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.MutableContextWrapper;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -20,9 +16,8 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.wiseasy.weblib.BaseApplication;
-import com.wiseasy.weblib.JsResponseCallback;
 
-class X5WebView extends WebView implements JsResponseCallback {
+class X5WebView extends WebView {
 
     private int i;//当前使用次数
     private Context context;
@@ -185,29 +180,4 @@ class X5WebView extends WebView implements JsResponseCallback {
         return loadFinished;
     }
 
-
-    Handler handler = new Handler(Looper.getMainLooper());
-
-    @Override
-    public void handleCallback(final String response) {
-        Log.i("WebViewManager", "js 返回结果：" + response);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                dealResponse(response);
-            }
-        });
-
-    }
-
-    private void dealResponse(String response) {
-        if(!TextUtils.isEmpty(response)){
-            String trigger = "javascript:" + "dj.callback" + "(" + response + ")";
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                evaluateJavascript(trigger, null);
-            } else {
-                loadUrl(trigger);
-            }
-        }
-    }
 }

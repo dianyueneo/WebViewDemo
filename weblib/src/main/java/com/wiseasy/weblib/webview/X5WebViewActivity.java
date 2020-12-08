@@ -3,8 +3,6 @@ package com.wiseasy.weblib.webview;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +10,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -110,41 +107,17 @@ public class X5WebViewActivity extends AppCompatActivity{
             }
         });
 
-        mWebView.removeJavascriptInterface("webview");
-
-        mWebView.addJavascriptInterface(new JsRemoteInterface(this), "webview");
+        registerJSApi();
 
         mWebView.loadUrl(mIntentUrl.toString());
 
     }
 
-    public final class JsRemoteInterface {
 
-        private Context context;
-
-        public JsRemoteInterface(Context context) {
-            this.context = context;
-            Log.i("WebViewManager", "JsRemoteInterface : "+ context);
-        }
-
-        //此方法在JavaBridge线程运行
-        @SuppressLint("JavascriptInterface")
-        @JavascriptInterface
-        public void post(final String action, final String param){
-            Log.i("WebViewManager", "JsRemoteInterface post: "+ context);
-            dealAction(action, param);
-        }
-
-        private void dealAction(final String action, final String param) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    CommandDispatcher.getInstance().exec(context, action, param, mWebView);
-                }
-            });
-        }
-
+    private void registerJSApi(){
+        JSBridge jsBridge = new JSBridge(mWebView);
     }
+
 
     private void loadWebView(){
         mViewParent.removeAllViews();
