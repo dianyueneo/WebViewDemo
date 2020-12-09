@@ -25,13 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CashPayActivity"/>
-        <activity
-            android:name=".EmptyActivity"
-            android:process=":remote" />
-        <activity
-            android:name=".WebViewActivity"
-            android:process=":applet" />
+        <activity android:name=".CashPayActivity" />
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".WebViewProcessActivity" android:process=":remote"/>
 
     </application>
 

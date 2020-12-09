@@ -1,17 +1,17 @@
 package com.wiseasy.webviewdemo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class WebViewActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class WebViewProcessActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
+        setContentView(R.layout.activity_webview_process);
 
         WebView webView_1 = findViewById(R.id.webView_1);
 

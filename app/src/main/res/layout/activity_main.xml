@@ -18,24 +18,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
         >
 
         <Button
-            android:id="@+id/btn_1"
+            android:id="@+id/btn_webview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Empty"
+            android:text="WebView"
+            android:textAllCaps="false"
             />
 
         <Button
-            android:id="@+id/btn_2"
+            android:id="@+id/btn_webview_process"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="WebView"
+            android:text="WebView:Remote"
+            android:textAllCaps="false"
             />
 
 
@@ -44,30 +44,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
         >
 
         <Button
-            android:id="@+id/btn_3"
+            android:id="@+id/btn_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X5WebView1"
+            android:textAllCaps="false"
             />
 
         <Button
-            android:id="@+id/btn_4"
+            android:id="@+id/btn_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X5WebView2"
+            android:textAllCaps="false"
             />
 
         <Button
-            android:id="@+id/btn_5"
+            android:id="@+id/btn_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X5WebView3"
+            android:textAllCaps="false"
             />
 
     </LinearLayout>
@@ -82,17 +84,19 @@
         >
 
         <Button
-            android:id="@+id/btn_6"
+            android:id="@+id/btn_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X5WebView4"
+            android:textAllCaps="false"
             />
 
         <Button
-            android:id="@+id/btn_7"
+            android:id="@+id/btn_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X5WebView5"
+            android:textAllCaps="false"
             />
 
     </LinearLayout>
