@@ -26,7 +26,6 @@ public class MainProcessCommands extends Commands {
     private final Command payCommand = new Command() {
 
         private ResultCallback myCallback;
-        private Map mapParams;
 
         @Override
         public String cmdName() {
@@ -40,16 +39,11 @@ public class MainProcessCommands extends Commands {
             context.startActivity(intent);
 
             myCallback = callback;
-            mapParams = params;
 
             LocalBroadcastManager.getInstance(context).registerReceiver(new MyBroadcastReceiver(), new IntentFilter(CommandsConstants.Action_Pay));
 
         }
 
-        @Override
-        public String exec(Context context, Map params) {
-            return null;
-        }
 
         class MyBroadcastReceiver extends BroadcastReceiver{
 
@@ -58,7 +52,6 @@ public class MainProcessCommands extends Commands {
                 Log.i("WebViewManager", "pay 收到响应");
                 String result = intent.getStringExtra("result");
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("callbackname", (String)mapParams.get("callback"));
                 jsonObject.addProperty("result", result);
                 myCallback.handleCallback(jsonObject.toString());
 

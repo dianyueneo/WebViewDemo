@@ -4,18 +4,22 @@ import android.content.Context;
 
 import java.util.Map;
 
-public interface Command {
+public abstract class Command {
 
-    String cmdName();
+    public abstract String cmdName();
 
     /**
      * 异步
      */
-    void exec(Context context, Map params, ResultCallback resultBack);
+    public void exec(Context context, Map params, ResultCallback resultBack){
+
+    }
 
     /**
      * 同步
      */
-    String exec(Context context, Map params);
+    public String exec(Context context, Map params){
+        return null;
+    }
 
 }

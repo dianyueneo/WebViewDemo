@@ -17,7 +17,6 @@ import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.wiseasy.weblib.commands.CommandDispatcher;
 import com.wiseasy.weblib.R;
 
 import java.net.URL;
@@ -59,7 +58,7 @@ public class X5WebViewActivity extends AppCompatActivity{
 
         init();
 
-        CommandDispatcher.getInstance().init(this.getApplication());
+
     }
 
     private void init() {

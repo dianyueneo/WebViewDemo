@@ -11,8 +11,8 @@ dj.addCallback = function(name,func,userdata){
     dj.callbacks[name] = {callback:func,userdata:userdata};
 };
 
-dj.callback = function(para){
-    var callbackobject = dj.callbacks[para.callbackname];
+dj.callback = function(para, callbackname){
+    var callbackobject = dj.callbacks[callbackname];
     if (callbackobject !== undefined){
         if (callbackobject.userdata !== undefined){
             callbackobject.userdata.callbackData = para;
@@ -22,7 +22,7 @@ dj.callback = function(para){
             if(ret === false){
                 return
             }
-            delete dj.callbacks[para.callbackname];
+            delete dj.callbacks[callbackname];
         }
     }
 };
@@ -43,7 +43,7 @@ dj.post = function(cmd,para){
         message.para = para || {};
         window.Native.call(message);
     }else if(window.dj.os.isAndroid){
-        window.Native.call(cmd,JSON.stringify(para));
+        window.Native.call(cmd,JSON.stringify(para), "");
     }
 };
 dj.postWithCallback = function(cmd,para,callback,ud){
@@ -58,8 +58,7 @@ dj.postWithCallback = function(cmd,para,callback,ud){
         message.para = para;
         window.Native.call(message);
     }else if(window.dj.os.isAndroid){
-        para.callback = callbackname;
-        window.Native.call(cmd,JSON.stringify(para));
+        window.Native.call(cmd, JSON.stringify(para), callbackname);
     }
 };
 

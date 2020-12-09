@@ -11,7 +11,6 @@ import com.wiseasy.weblib.IWebAidlCallback;
 import com.wiseasy.weblib.IWebAidlInterface;
 import com.wiseasy.weblib.remote.RemoteWebBinder;
 import com.wiseasy.weblib.utils.SystemInfoUtil;
-import com.wiseasy.weblib.webview.JsResponseCallback;
 
 import java.util.Map;
 
@@ -55,18 +54,14 @@ public class CommandDispatcher {
         Log.i("WebViewManager", "cmd: "+ cmd + " params: "+ params);
         Map mapParams = gson.fromJson(params, Map.class);
 
-        if(!SystemInfoUtil.inMainProcess(context)){
-            if(wevViewProcessCommands != null && wevViewProcessCommands.getCommands().containsKey(cmd)){
-                return wevViewProcessCommands.getCommands().get(cmd).exec(context, mapParams);
-            }else {
-                return getResponse(mapParams, "Fail, Unsupported features");
-            }
+        if(wevViewProcessCommands != null && wevViewProcessCommands.getCommands().containsKey(cmd)){
+            return wevViewProcessCommands.getCommands().get(cmd).exec(context, mapParams);
         }else {
-            return getResponse(mapParams, "Fail, Unsupported features");
+            return getResponse("Fail, Unsupported features");
         }
     }
 
-    public void dispatchJSRequest(Context context, String cmd, String params, final JsResponseCallback callback){
+    public void dispatchJSRequest(Context context, String cmd, String params, final ResultCallback callback){
         Log.i("WebViewManager", "cmd: "+ cmd + " params: "+ params);
         Map mapParams = gson.fromJson(params, Map.class);
 
@@ -87,16 +82,15 @@ public class CommandDispatcher {
 
                             @Override
                             public void onResult(String response) throws RemoteException {
-                                //todo 不支持的功能
                                 callback.handleCallback(response);
                             }
                         });
                     } catch (RemoteException e) {
-                        String response = getResponse(mapParams, "Fail，Please try again");
+                        String response = getResponse("Fail，Please try again");
                         callback.handleCallback(response);
                     }
                 } else {
-                    String response = getResponse(mapParams, "Fail，Please try again");
+                    String response = getResponse("Fail，Please try again");
                     callback.handleCallback(response);
                 }
             }
@@ -109,7 +103,7 @@ public class CommandDispatcher {
                     }
                 });
             }else {
-                String response = getResponse(mapParams, "Fail, Unsupported features");
+                String response = getResponse("Fail, Unsupported features");
                 callback.handleCallback(response);
             }
         }
@@ -117,9 +111,8 @@ public class CommandDispatcher {
 
     }
 
-    private String getResponse(Map mapParams, String errorMsg){
+    private String getResponse(String errorMsg){
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("callbackname", (String)mapParams.get("callback"));
         jsonObject.addProperty("result", errorMsg);
         return jsonObject.toString();
     }

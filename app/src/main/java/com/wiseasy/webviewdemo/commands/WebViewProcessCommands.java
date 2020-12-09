@@ -31,11 +31,6 @@ public class WebViewProcessCommands extends Commands {
         }
 
         @Override
-        public void exec(Context context, Map params, ResultCallback resultBack) {
-
-        }
-
-        @Override
         public String exec(Context context, Map params) {
             return "android 8.1";
         }
@@ -52,10 +47,6 @@ public class WebViewProcessCommands extends Commands {
             Toast.makeText(context, String.valueOf(params.get("message")), Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        public String exec(Context context, Map params) {
-            return null;
-        }
     };
 
     private final Command showDialogCommand = new Command() {
@@ -102,10 +93,6 @@ public class WebViewProcessCommands extends Commands {
             }
         }
 
-        @Override
-        public String exec(Context context, Map params) {
-            return null;
-        }
 
         private int getDialogButtonWhich(int index) {
             switch (index) {

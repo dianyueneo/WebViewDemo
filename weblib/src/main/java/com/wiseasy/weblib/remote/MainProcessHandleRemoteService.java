@@ -10,7 +10,7 @@ import android.os.RemoteException;
 import com.wiseasy.weblib.commands.CommandDispatcher;
 import com.wiseasy.weblib.IWebAidlCallback;
 import com.wiseasy.weblib.IWebAidlInterface;
-import com.wiseasy.weblib.webview.JsResponseCallback;
+import com.wiseasy.weblib.commands.ResultCallback;
 
 public class MainProcessHandleRemoteService extends Service {
 
@@ -43,7 +43,7 @@ public class MainProcessHandleRemoteService extends Service {
     }
 
     private void dealCmd(String cmd, String jsonParams, final IWebAidlCallback callback) {
-        CommandDispatcher.getInstance().dispatchJSRequest(MainProcessHandleRemoteService.this, cmd, jsonParams, new JsResponseCallback() {
+        CommandDispatcher.getInstance().dispatchJSRequest(MainProcessHandleRemoteService.this, cmd, jsonParams, new ResultCallback() {
             @Override
             public void handleCallback(String response) {
                 try {
