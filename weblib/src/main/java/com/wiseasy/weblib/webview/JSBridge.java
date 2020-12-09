@@ -14,15 +14,27 @@ class JSBridge implements JsResponseCallback {
 
     public JSBridge(X5WebView mWebView) {
         this.mWebView = mWebView;
-        mWebView.addJavascriptInterface(this, "webview");
+        mWebView.addJavascriptInterface(this, "Native");
     }
 
-
-    //此方法在JavaBridge线程运行
+    /**
+     * 异步接口
+     * 此方法在JavaBridge线程运行
+     */
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void post(String cmd, String param){
-        CommandDispatcher.getInstance().exec(mWebView.getContext(), cmd, param, this);
+    public void call(String cmd, String param){
+        CommandDispatcher.getInstance().dispatchJSRequest(mWebView.getContext(), cmd, param, this);
+    }
+
+    /**
+     * 同步接口
+     * 此方法在JavaBridge线程运行
+     */
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public String callSync(String cmd, String param){
+        return CommandDispatcher.getInstance().dispatchJSRequest(mWebView.getContext(), cmd, param);
     }
 
     @Override

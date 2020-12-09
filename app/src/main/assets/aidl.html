@@ -40,10 +40,16 @@
             dj.post("showToast", {message: JSON.stringify(res)});
         });
     }
+
+    function getSyncInfo(){
+        var syncInfo = dj.callSync("getSysInfo", {})
+        alert(syncInfo)
+    }
 </script>
 <div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppToast()">调用: showToast</div>
 <div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppDialog()">调用: showDialog</div>
 <div class="item" style="font-size: 20px; color: #ffffff" onclick="callAppPay()">调用: pay</div>
+<div class="item" style="font-size: 20px; color: #ffffff" onclick="getSyncInfo()">调用: getSyncInfo</div>
 <script src="js/dj.js" charset="utf-8"></script>
 </body>
 </html>

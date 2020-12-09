@@ -46,6 +46,11 @@ public class MainProcessCommands extends Commands {
 
         }
 
+        @Override
+        public String exec(Context context, Map params) {
+            return null;
+        }
+
         class MyBroadcastReceiver extends BroadcastReceiver{
 
             @Override

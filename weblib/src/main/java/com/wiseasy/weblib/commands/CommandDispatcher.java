@@ -51,7 +51,22 @@ public class CommandDispatcher {
         this.wevViewProcessCommands = commands;
     }
 
-    public void exec(Context context, String cmd, String params, final JsResponseCallback callback){
+    public String dispatchJSRequest(Context context, String cmd, String params){
+        Log.i("WebViewManager", "cmd: "+ cmd + " params: "+ params);
+        Map mapParams = gson.fromJson(params, Map.class);
+
+        if(!SystemInfoUtil.inMainProcess(context)){
+            if(wevViewProcessCommands != null && wevViewProcessCommands.getCommands().containsKey(cmd)){
+                return wevViewProcessCommands.getCommands().get(cmd).exec(context, mapParams);
+            }else {
+                return getResponse(mapParams, "Fail, Unsupported features");
+            }
+        }else {
+            return getResponse(mapParams, "Fail, Unsupported features");
+        }
+    }
+
+    public void dispatchJSRequest(Context context, String cmd, String params, final JsResponseCallback callback){
         Log.i("WebViewManager", "cmd: "+ cmd + " params: "+ params);
         Map mapParams = gson.fromJson(params, Map.class);
 
@@ -105,7 +120,7 @@ public class CommandDispatcher {
     private String getResponse(Map mapParams, String errorMsg){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("callbackname", (String)mapParams.get("callback"));
-        jsonObject.addProperty("result", "Fail, Unsupported features");
+        jsonObject.addProperty("result", errorMsg);
         return jsonObject.toString();
     }
 

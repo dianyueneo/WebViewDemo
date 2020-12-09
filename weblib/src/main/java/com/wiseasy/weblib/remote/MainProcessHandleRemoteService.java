@@ -43,7 +43,7 @@ public class MainProcessHandleRemoteService extends Service {
     }
 
     private void dealCmd(String cmd, String jsonParams, final IWebAidlCallback callback) {
-        CommandDispatcher.getInstance().exec(MainProcessHandleRemoteService.this, cmd, jsonParams, new JsResponseCallback() {
+        CommandDispatcher.getInstance().dispatchJSRequest(MainProcessHandleRemoteService.this, cmd, jsonParams, new JsResponseCallback() {
             @Override
             public void handleCallback(String response) {
                 try {

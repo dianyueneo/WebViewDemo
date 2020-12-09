@@ -3,7 +3,6 @@ package com.wiseasy.webviewdemo.commands;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -22,7 +21,25 @@ public class WebViewProcessCommands extends Commands {
     public WebViewProcessCommands() {
         registCommand(showToastCommand);
         registCommand(showDialogCommand);
+        registCommand(getSysInfoCommand);
     }
+
+    private final Command getSysInfoCommand = new Command() {
+        @Override
+        public String cmdName() {
+            return "getSysInfo";
+        }
+
+        @Override
+        public void exec(Context context, Map params, ResultCallback resultBack) {
+
+        }
+
+        @Override
+        public String exec(Context context, Map params) {
+            return "android 8.1";
+        }
+    };
 
     private final Command showToastCommand = new Command() {
         @Override
@@ -33,6 +50,11 @@ public class WebViewProcessCommands extends Commands {
         @Override
         public void exec(Context context, Map params, ResultCallback resultBack) {
             Toast.makeText(context, String.valueOf(params.get("message")), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public String exec(Context context, Map params) {
+            return null;
         }
     };
 
@@ -78,6 +100,11 @@ public class WebViewProcessCommands extends Commands {
                     dialog.show();
                 }
             }
+        }
+
+        @Override
+        public String exec(Context context, Map params) {
+            return null;
         }
 
         private int getDialogButtonWhich(int index) {

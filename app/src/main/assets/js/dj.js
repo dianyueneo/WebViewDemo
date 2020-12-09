@@ -27,6 +27,13 @@ dj.callback = function(para){
     }
 };
 
+dj.callSync = function(cmd,para){
+    if(dj.os.isIOS){
+    }else if(window.dj.os.isAndroid){
+        return window.Native.callSync(cmd,JSON.stringify(para));
+    }
+}
+
 dj.post = function(cmd,para){
     if(dj.os.isIOS){
         var message = {};
@@ -34,10 +41,9 @@ dj.post = function(cmd,para){
             cmd:cmd
         };
         message.para = para || {};
-        window.webview.post(message);
+        window.Native.call(message);
     }else if(window.dj.os.isAndroid){
-        window.webview.post(cmd,JSON.stringify(para));//有问题的代码
-//        window.webview.post(cmd,JSON.stringify(para) + (new Date()).getTime());//正常的代码
+        window.Native.call(cmd,JSON.stringify(para));
     }
 };
 dj.postWithCallback = function(cmd,para,callback,ud){
@@ -50,12 +56,13 @@ dj.postWithCallback = function(cmd,para,callback,ud){
             callback:callbackname
         };
         message.para = para;
-        window.webview.post(message);
+        window.Native.call(message);
     }else if(window.dj.os.isAndroid){
         para.callback = callbackname;
-        window.webview.post(cmd,JSON.stringify(para));
+        window.Native.call(cmd,JSON.stringify(para));
     }
 };
+
 dj.dispatchEvent = function(para){
     if (!para) {
         para = {"name":"webviewLoadComplete"};
