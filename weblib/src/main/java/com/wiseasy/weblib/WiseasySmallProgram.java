@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.wiseasy.weblib.commands.CommandDispatcher;
 import com.wiseasy.weblib.commands.Commands;
 import com.wiseasy.weblib.utils.SystemInfoUtil;
 import com.wiseasy.weblib.webview.X5InitService;
@@ -21,13 +22,23 @@ public class WiseasySmallProgram {
         }
     }
 
-    public static void registMainProcessCommands(Context context, Commands commands){
+    /**
+     * 注册在主进程中处理的命令
+     * @param context
+     * @param commands
+     */
+    public static void registerMainProcessCommands(Context context, Commands commands){
         if(SystemInfoUtil.inMainProcess(context)) {
             CommandDispatcher.getInstance().setMainProcessCommands(commands);
         }
     }
 
-    public static void registWebViewProcessCommands(Context context, Commands commands){
+    /**
+     * 注册在WebView进程中处理的命令
+     * @param context
+     * @param commands
+     */
+    public static void registerWebViewProcessCommands(Context context, Commands commands){
         if(SystemInfoUtil.isWebViewProcess(context)) {
             CommandDispatcher.getInstance().setWebViewProcessCommands(commands);
         }
@@ -38,6 +49,12 @@ public class WiseasySmallProgram {
         context.startService(intent);
     }
 
+    /**
+     * 启动小程序
+     * @param context
+     * @param url
+     * @param title
+     */
     public static void start(Activity context, String url, String title){
         Intent intent = new Intent(context, X5WebViewActivity.class);
         intent.putExtra("url", url);

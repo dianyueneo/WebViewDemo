@@ -1,11 +1,13 @@
-package com.wiseasy.weblib;
+package com.wiseasy.weblib.remote;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import com.wiseasy.weblib.IWebAidlInterface;
 
 public class RemoteWebBinder {
 
@@ -23,10 +25,13 @@ public class RemoteWebBinder {
 
 
     private IWebAidlInterface webAidlInterface;
+    private Application application;
 
-    public void connectBinderService(){
-        Intent intent = new Intent(BaseApplication.context, MainProcessHandleRemoteService.class);
-        BaseApplication.context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+    public void connectBinderService(Application application){
+        this.application = application;
+        Intent intent = new Intent(application, MainProcessHandleRemoteService.class);
+        application.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -51,7 +56,7 @@ public class RemoteWebBinder {
         public void binderDied() {
             webAidlInterface.asBinder().unlinkToDeath(deathRecipient, 0);
             webAidlInterface = null;
-            connectBinderService();
+            connectBinderService(application);
         }
     };
 

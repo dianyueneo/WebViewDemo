@@ -15,7 +15,6 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.wiseasy.weblib.BaseApplication;
 
 class X5WebView extends WebView {
 
@@ -117,6 +116,7 @@ class X5WebView extends WebView {
             public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
                 super.onReceivedError(webView, webResourceRequest, webResourceError);
                 X5WebView.this.onReceivedError();
+                Log.i("WebViewManager", "onReceivedError: ");
             }
         });
 
@@ -153,7 +153,13 @@ class X5WebView extends WebView {
 
     public void detach() {
         MutableContextWrapper ct = (MutableContextWrapper) this.getContext();
-        ct.setBaseContext(BaseApplication.context);
+        ct.setBaseContext(this.getContext().getApplicationContext());
+    }
+
+    public void reset(){
+        stopLoading();
+        clearCache(true);
+        clearHistory();
     }
 
     public void addUseTimes() {

@@ -1,6 +1,5 @@
 package com.wiseasy.webviewdemo.commands;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
@@ -10,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
-import com.wiseasy.weblib.ResultCallback;
+import com.wiseasy.weblib.commands.ResultCallback;
 import com.wiseasy.weblib.commands.Command;
 import com.wiseasy.weblib.commands.Commands;
 import com.wiseasy.weblib.utils.ParamsUtil;
@@ -27,7 +26,7 @@ public class WebViewProcessCommands extends Commands {
 
     private final Command showToastCommand = new Command() {
         @Override
-        public String action() {
+        public String cmdName() {
             return "showToast";
         }
 
@@ -39,7 +38,7 @@ public class WebViewProcessCommands extends Commands {
 
     private final Command showDialogCommand = new Command() {
         @Override
-        public String action() {
+        public String cmdName() {
             return "showDialog";
         }
 

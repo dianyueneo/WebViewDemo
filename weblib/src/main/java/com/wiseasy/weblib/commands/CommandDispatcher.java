@@ -1,13 +1,17 @@
-package com.wiseasy.weblib;
+package com.wiseasy.weblib.commands;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.RemoteException;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.wiseasy.weblib.commands.Commands;
+import com.wiseasy.weblib.IWebAidlCallback;
+import com.wiseasy.weblib.IWebAidlInterface;
+import com.wiseasy.weblib.remote.RemoteWebBinder;
 import com.wiseasy.weblib.utils.SystemInfoUtil;
+import com.wiseasy.weblib.webview.JsResponseCallback;
 
 import java.util.Map;
 
@@ -28,11 +32,14 @@ public class CommandDispatcher {
     private Commands mainProcessCommands;
     private Commands wevViewProcessCommands;
 
-
-    public void init(Context context){
+    /**
+     * 需要在不同的进程中初始化
+     * @param application
+     */
+    public void init(Application application){
         //WebView进程
-        if(!SystemInfoUtil.inMainProcess(context)){
-            RemoteWebBinder.getInstance().connectBinderService();
+        if(!SystemInfoUtil.inMainProcess(application)){
+            RemoteWebBinder.getInstance().connectBinderService(application);
         }
     }
 
@@ -44,14 +51,14 @@ public class CommandDispatcher {
         this.wevViewProcessCommands = commands;
     }
 
-    public void exec(Context context, String action, String params, final JsResponseCallback callback){
-        Log.i("WebViewManager", "action: "+ action + " params: "+ params);
+    public void exec(Context context, String cmd, String params, final JsResponseCallback callback){
+        Log.i("WebViewManager", "cmd: "+ cmd + " params: "+ params);
         Map mapParams = gson.fromJson(params, Map.class);
 
         //WebView进程
         if(!SystemInfoUtil.inMainProcess(context)){
-            if(wevViewProcessCommands != null && wevViewProcessCommands.getCommands().containsKey(action)){
-                wevViewProcessCommands.getCommands().get(action).exec(context, mapParams, new ResultCallback() {
+            if(wevViewProcessCommands != null && wevViewProcessCommands.getCommands().containsKey(cmd)){
+                wevViewProcessCommands.getCommands().get(cmd).exec(context, mapParams, new ResultCallback() {
                     @Override
                     public void handleCallback(String response) {
                         callback.handleCallback(response);
@@ -61,7 +68,7 @@ public class CommandDispatcher {
                 IWebAidlInterface webAidlInterface = RemoteWebBinder.getInstance().getBinder();
                 if(webAidlInterface != null){
                     try {
-                        webAidlInterface.handleWebAction(action, params, new IWebAidlCallback.Stub() {
+                        webAidlInterface.handleWebCmd(cmd, params, new IWebAidlCallback.Stub() {
 
                             @Override
                             public void onResult(String response) throws RemoteException {
@@ -79,8 +86,8 @@ public class CommandDispatcher {
                 }
             }
         }else {//主进程
-            if(mainProcessCommands != null && mainProcessCommands.getCommands().containsKey(action)){
-                mainProcessCommands.getCommands().get(action).exec(context, mapParams, new ResultCallback() {
+            if(mainProcessCommands != null && mainProcessCommands.getCommands().containsKey(cmd)){
+                mainProcessCommands.getCommands().get(cmd).exec(context, mapParams, new ResultCallback() {
                     @Override
                     public void handleCallback(String response) {
                         callback.handleCallback(response);

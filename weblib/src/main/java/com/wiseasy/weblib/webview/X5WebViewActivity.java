@@ -17,7 +17,7 @@ import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-import com.wiseasy.weblib.CommandDispatcher;
+import com.wiseasy.weblib.commands.CommandDispatcher;
 import com.wiseasy.weblib.R;
 
 import java.net.URL;
@@ -46,7 +46,7 @@ public class X5WebViewActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("WebViewManager", "X5WebViewActivity onCreate "+ X5WebViewActivity.this);
-        setContentView(R.layout.activity_web_view);
+        setContentView(R.layout.activity_x5webview);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -59,7 +59,7 @@ public class X5WebViewActivity extends AppCompatActivity{
 
         init();
 
-        CommandDispatcher.getInstance().init(this);
+        CommandDispatcher.getInstance().init(this.getApplication());
     }
 
     private void init() {
@@ -76,7 +76,7 @@ public class X5WebViewActivity extends AppCompatActivity{
             }
         });
 
-        mWebView = WebViewManager.getInstance().get(mIntentUrl.toString());
+        mWebView = WebViewManager.getInstance().get(this.getApplication(), mIntentUrl.toString());
         mWebView.attach(this);
 
         if(mIntentUrl.toString().equals(mWebView.getLoadedUrl()) && mWebView.isLoadFinished()){

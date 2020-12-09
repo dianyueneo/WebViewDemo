@@ -1,4 +1,4 @@
-package com.wiseasy.weblib;
+package com.wiseasy.weblib.commands;
 
 public interface ResultCallback {
     void handleCallback(String response);

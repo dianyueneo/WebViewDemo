@@ -4,7 +4,7 @@
 
     <application>
         <service
-            android:name=".MainProcessHandleRemoteService"
+            android:name=".remote.MainProcessHandleRemoteService"
             android:exported="false" />
 
         <activity
@@ -18,7 +18,7 @@
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt"></service>
+            android:process=":dexopt"/>
     </application>
 
 </manifest>

@@ -1,11 +1,10 @@
 package com.wiseasy.weblib.webview;
 
+import android.app.Application;
 import android.content.MutableContextWrapper;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-
-import com.wiseasy.weblib.BaseApplication;
 
 import java.util.HashMap;
 
@@ -29,27 +28,27 @@ class WebViewManager {
      * 预加载, 如果x5没有初始化成功则生成原生webview
      * 如果预加载的原生webview没有使用则删除
      */
-    public void preLoad(){
+    public void preLoad(Application application){
         if(maps.size() < MaxSize){
             if(maps.get(PreLoad) != null){
-                Log.i("WebViewManager", "remove unused WebView");
+                Log.i("WebViewManager", "remove unused Native WebView");
                 maps.remove(PreLoad);
             }
-            createWebView(PreLoad);
+            createWebView(application, PreLoad);
         }
     }
 
-    private void createWebView(String key){
+    private void createWebView(Application application, String key){
 
         Log.i("WebViewManager", "create X5WebView");
 
-        X5WebView mWebView = new X5WebView(new MutableContextWrapper(BaseApplication.context));
+        X5WebView mWebView = new X5WebView(new MutableContextWrapper(application));
 
         maps.put(key, mWebView);
 
     }
 
-    public X5WebView get(String url){
+    public X5WebView get(Application application, String url){
 
         for (String s : maps.keySet()) {
             Log.i("WebViewManager", "webview: " + s);
@@ -69,7 +68,7 @@ class WebViewManager {
         }
 
         if(maps.size() < MaxSize){
-            createWebView(url);
+            createWebView(application, url);
         }else {
             String oldKey = getMiniTimesWebViewKey();
             replaceKey(oldKey, url);

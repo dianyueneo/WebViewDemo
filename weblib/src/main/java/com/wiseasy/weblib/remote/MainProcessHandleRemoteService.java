@@ -1,4 +1,4 @@
-package com.wiseasy.weblib;
+package com.wiseasy.weblib.remote;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,12 +7,17 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
 
+import com.wiseasy.weblib.commands.CommandDispatcher;
+import com.wiseasy.weblib.IWebAidlCallback;
+import com.wiseasy.weblib.IWebAidlInterface;
+import com.wiseasy.weblib.webview.JsResponseCallback;
+
 public class MainProcessHandleRemoteService extends Service {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        CommandDispatcher.getInstance().init(this);
+        CommandDispatcher.getInstance().init(this.getApplication());
     }
 
     @Override
@@ -23,13 +28,13 @@ public class MainProcessHandleRemoteService extends Service {
 
     class MainProcessAidlInterface extends IWebAidlInterface.Stub {
         @Override
-        public void handleWebAction(final String actionName, final String jsonParams, final IWebAidlCallback callback) throws RemoteException {
+        public void handleWebCmd(final String cmd, final String jsonParams, final IWebAidlCallback callback) throws RemoteException {
 
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    dealAction(actionName, jsonParams, callback);
+                    dealCmd(cmd, jsonParams, callback);
                 }
             });
         }
@@ -37,8 +42,8 @@ public class MainProcessHandleRemoteService extends Service {
 
     }
 
-    private void dealAction(String actionName, String jsonParams, final IWebAidlCallback callback) {
-        CommandDispatcher.getInstance().exec(MainProcessHandleRemoteService.this, actionName, jsonParams, new JsResponseCallback() {
+    private void dealCmd(String cmd, String jsonParams, final IWebAidlCallback callback) {
+        CommandDispatcher.getInstance().exec(MainProcessHandleRemoteService.this, cmd, jsonParams, new JsResponseCallback() {
             @Override
             public void handleCallback(String response) {
                 try {

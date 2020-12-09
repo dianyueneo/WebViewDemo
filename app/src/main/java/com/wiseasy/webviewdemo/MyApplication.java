@@ -1,20 +1,26 @@
 package com.wiseasy.webviewdemo;
 
-import com.wiseasy.weblib.BaseApplication;
+import android.content.Context;
+
+import androidx.multidex.MultiDexApplication;
 import com.wiseasy.weblib.WiseasySmallProgram;
 import com.wiseasy.webviewdemo.commands.MainProcessCommands;
 import com.wiseasy.webviewdemo.commands.WebViewProcessCommands;
 
 
-public class MyApplication extends BaseApplication {
+public class MyApplication extends MultiDexApplication {
+
+    public static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        context = this;
+
         WiseasySmallProgram.init(this);
-        WiseasySmallProgram.registMainProcessCommands(this, new MainProcessCommands());
-        WiseasySmallProgram.registWebViewProcessCommands(this, new WebViewProcessCommands());
+        WiseasySmallProgram.registerMainProcessCommands(this, new MainProcessCommands());
+        WiseasySmallProgram.registerWebViewProcessCommands(this, new WebViewProcessCommands());
 
     }
 

@@ -6,8 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
-import com.wiseasy.weblib.CommandDispatcher;
-import com.wiseasy.weblib.JsResponseCallback;
+import com.wiseasy.weblib.commands.CommandDispatcher;
 
 class JSBridge implements JsResponseCallback {
 
@@ -22,13 +21,8 @@ class JSBridge implements JsResponseCallback {
     //此方法在JavaBridge线程运行
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void post(String action, String param){
-        dealAction(action, param);
-    }
-
-
-    private void dealAction(final String action, final String param) {
-        CommandDispatcher.getInstance().exec(mWebView.getContext(), action, param, this);
+    public void post(String cmd, String param){
+        CommandDispatcher.getInstance().exec(mWebView.getContext(), cmd, param, this);
     }
 
     @Override

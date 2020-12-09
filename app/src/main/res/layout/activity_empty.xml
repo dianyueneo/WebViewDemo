@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EmptyWebviewActivity">
+    tools:context=".WebViewActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sdlfalsdfj"
+        android:text="带有WebView的空页面\nWebView不加载任何内容"
+        android:gravity="center_horizontal"
         />
 
     <WebView

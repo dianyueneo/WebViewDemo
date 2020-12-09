@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonObject;
-import com.wiseasy.weblib.ResultCallback;
+import com.wiseasy.weblib.commands.ResultCallback;
 import com.wiseasy.weblib.commands.Command;
 import com.wiseasy.weblib.commands.Commands;
 import com.wiseasy.webviewdemo.CashPayActivity;
@@ -29,7 +29,7 @@ public class MainProcessCommands extends Commands {
         private Map mapParams;
 
         @Override
-        public String action() {
+        public String cmdName() {
             return "pay";
         }
 

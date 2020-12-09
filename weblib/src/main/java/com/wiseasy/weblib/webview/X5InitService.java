@@ -41,7 +41,7 @@ public class X5InitService extends IntentService {
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
                 Log.i("WebViewManager", "x5 onViewInitFinished is " + arg0);
                 if(arg0){
-                    WebViewManager.getInstance().preLoad();
+                    WebViewManager.getInstance().preLoad(X5InitService.this.getApplication());
                 }
             }
 
@@ -57,7 +57,7 @@ public class X5InitService extends IntentService {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                WebViewManager.getInstance().preLoad();
+                WebViewManager.getInstance().preLoad(X5InitService.this.getApplication());
             }
         });
 

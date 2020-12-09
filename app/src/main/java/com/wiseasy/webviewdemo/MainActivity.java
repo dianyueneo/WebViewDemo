@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.btn_2:
-                Intent intent2 = new Intent(this, EmptyWebviewActivity.class);
+                Intent intent2 = new Intent(this, WebViewActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.btn_3:

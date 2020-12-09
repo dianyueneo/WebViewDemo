@@ -11,6 +11,6 @@ public class Commands {
     }
 
     protected void registCommand(Command command){
-        commands.put(command.action(), command);
+        commands.put(command.cmdName(), command);
     }
 }

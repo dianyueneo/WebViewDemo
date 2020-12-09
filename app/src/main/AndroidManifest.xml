@@ -30,7 +30,7 @@
             android:name=".EmptyActivity"
             android:process=":remote" />
         <activity
-            android:name=".EmptyWebviewActivity"
+            android:name=".WebViewActivity"
             android:process=":applet" />
 
     </application>
