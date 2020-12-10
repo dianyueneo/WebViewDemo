@@ -28,6 +28,7 @@ public class X5WebViewActivity extends AppCompatActivity{
     private X5WebView mWebView;
     private URL mIntentUrl;
     private ViewGroup mViewParent;
+    private boolean cache;
 
     private Handler handler = new Handler(){
         @Override
@@ -54,7 +55,7 @@ public class X5WebViewActivity extends AppCompatActivity{
             } catch (Exception e) {
             }
         }
-
+        cache = intent.getBooleanExtra("cache", true);
 
         init();
 
@@ -78,43 +79,15 @@ public class X5WebViewActivity extends AppCompatActivity{
         mWebView = WebViewManager.getInstance().get(this.getApplication(), mIntentUrl.toString());
         mWebView.attach(this);
 
-        if(mIntentUrl.toString().equals(mWebView.getLoadedUrl()) && mWebView.isLoadFinished()){
-            loadWebView();
-        } else  {
-            TextView tv_name = findViewById(R.id.tv_name);
-            tv_name.setText(name);
-        }
-
-        mWebView.setWebViewClient(new WebViewClient(){
+        mWebView.setOnPageFinishedListener(new X5WebView.OnPageFinishedListener() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView webView, String s) {
-                Log.i("WebViewManager", "shouldOverrideUrlLoading: " + s);
-                return false;
-            }
-
-            @Override
-            public void onPageFinished(WebView webView, String s) {
-                super.onPageFinished(webView, s);
-                handler.sendEmptyMessage(Msg_What_loadWebView);
-            }
-
-
-            @Override
-            public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
-                super.onReceivedError(webView, webResourceRequest, webResourceError);
-                mWebView.onReceivedError();
+            public void onPageFinished() {
+                loadWebView();
             }
         });
 
-        registerJSApi();
-
         mWebView.loadUrl(mIntentUrl.toString());
 
-    }
-
-
-    private void registerJSApi(){
-        JSBridge jsBridge = new JSBridge(mWebView);
     }
 
 
@@ -128,6 +101,9 @@ public class X5WebViewActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         mWebView.detach();
+        if(!cache){
+            mWebView.reset();
+        }
         Log.i("WebViewManager", "X5WebViewActivity onDestroy "+ X5WebViewActivity.this);
     }
 

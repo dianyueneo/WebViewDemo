@@ -62,4 +62,18 @@ public class WiseasySmallProgram {
         context.startActivity(intent);
     }
 
+    /**
+     * 启动小程序,无缓存
+     * @param context
+     * @param url
+     * @param title
+     */
+    public static void startNoCache(Activity context, String url, String title){
+        Intent intent = new Intent(context, X5WebViewActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("name", title);
+        intent.putExtra("cache", false);
+        context.startActivity(intent);
+    }
+
 }

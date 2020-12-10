@@ -83,14 +83,6 @@
                 android:src="@mipmap/loading"
                 />
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="吉野家"
-                android:textSize="16sp"
-
-                />
         </LinearLayout>
 
     </FrameLayout>

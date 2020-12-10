@@ -50,20 +50,26 @@ class WebViewManager {
 
     public X5WebView get(Application application, String url){
 
+        long p = System.currentTimeMillis();
+
         for (String s : maps.keySet()) {
-            Log.i("WebViewManager", "webview: " + s);
+            Log.i("WebViewManager", "webview in pool : " + s);
         }
 
         X5WebView targetWebView = maps.get(url);
         if(targetWebView != null){
             cleanWebView(targetWebView);
             targetWebView.addUseTimes();
+            long n = System.currentTimeMillis();
+            Log.i("WebViewManager", "testWebViewFirstInit use time:" + (n-p));
             return targetWebView;
         }
 
         X5WebView cachedWebView = maps.get(PreLoad);
         if(cachedWebView != null){
             replaceKey(PreLoad, url);
+            long n = System.currentTimeMillis();
+            Log.i("WebViewManager", "testWebViewFirstInit use time:" + (n-p));
             return cachedWebView;
         }
 
@@ -73,6 +79,9 @@ class WebViewManager {
             String oldKey = getMiniTimesWebViewKey();
             replaceKey(oldKey, url);
         }
+
+        long n = System.currentTimeMillis();
+        Log.i("WebViewManager", "testWebViewFirstInit use time:" + (n-p));
 
         return maps.get(url);
     }

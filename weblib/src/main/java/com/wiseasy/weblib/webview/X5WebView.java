@@ -3,6 +3,7 @@ package com.wiseasy.weblib.webview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.MutableContextWrapper;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ class X5WebView extends WebView {
     private Context context;
     private String loadedUrl;
     private boolean loadFinished = false;
+    private OnPageFinishedListener onPageFinishedListener;
 
     public X5WebView(Context context) {
         super(context);
@@ -100,6 +102,9 @@ class X5WebView extends WebView {
             }
         });
 
+    }
+
+    private void initClient(){
         this.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, String s) {
@@ -110,6 +115,9 @@ class X5WebView extends WebView {
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
                 Log.i("WebViewManager", "onPageFinished: ");
+                if(onPageFinishedListener != null){
+                    onPageFinishedListener.onPageFinished();
+                }
             }
 
             @Override
@@ -127,7 +135,6 @@ class X5WebView extends WebView {
                 loadFinished = progress == 100;
             }
         });
-
     }
 
     @Override
@@ -135,6 +142,8 @@ class X5WebView extends WebView {
         if (!s.equals(loadedUrl)) {
             loadedUrl = s;
             super.loadUrl(s);
+        }else if(loadFinished && onPageFinishedListener != null) {
+            onPageFinishedListener.onPageFinished();
         }
     }
 
@@ -142,24 +151,37 @@ class X5WebView extends WebView {
         ((MutableContextWrapper) this.getContext()).setBaseContext(activity);
 
         try {
-            if (Integer.parseInt(android.os.Build.VERSION.SDK) >= 11) {
-                activity.getWindow().setFlags(
-                        android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                        android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            }else {
+                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
         } catch (Exception e) {
         }
+
+        initClient();
+
+        registerJSApi();
     }
 
     public void detach() {
         MutableContextWrapper ct = (MutableContextWrapper) this.getContext();
         ct.setBaseContext(this.getContext().getApplicationContext());
+        setWebChromeClient(null);
+        setWebViewClient(null);
+        onPageFinishedListener = null;
     }
 
     public void reset(){
+        Log.i("WebViewManager", "reset: ");
+        loadUrl("");
         stopLoading();
         clearCache(true);
         clearHistory();
+    }
+
+    private void registerJSApi(){
+        JSBridge jsBridge = new JSBridge(this);
     }
 
     public void addUseTimes() {
@@ -184,6 +206,14 @@ class X5WebView extends WebView {
 
     public boolean isLoadFinished(){
         return loadFinished;
+    }
+
+    public void setOnPageFinishedListener(OnPageFinishedListener onPageFinishedListener) {
+        this.onPageFinishedListener = onPageFinishedListener;
+    }
+
+    public interface OnPageFinishedListener {
+        void onPageFinished();
     }
 
 }
