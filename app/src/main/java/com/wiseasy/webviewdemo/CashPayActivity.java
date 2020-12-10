@@ -17,7 +17,7 @@ public class CashPayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cash_pay);
 
-        String amount = getIntent().getStringExtra("amount");
+        final String amount = getIntent().getStringExtra("amount");
         TextView tv_amount = findViewById(R.id.tv_amount);
         tv_amount.setText(String.format("金额：%s元", amount));
 
@@ -26,7 +26,7 @@ public class CashPayActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(CommandsConstants.Action_Pay);
-                intent.putExtra("result", "支付成功");
+                intent.putExtra("result", "支付成功, "+amount);
                 LocalBroadcastManager.getInstance(CashPayActivity.this).sendBroadcast(intent);
 
                 finish();

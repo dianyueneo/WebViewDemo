@@ -36,7 +36,8 @@
     }
 
     function callAppPay() {
-        dj.postWithCallback("pay", {amount: "100"}, function(res) {
+        var msg = {amount: ""+Math.floor(Math.random() * 10000)}
+        dj.postWithCallback("pay", msg, function(res) {
             dj.post("showToast", {message: JSON.stringify(res)});
         });
     }

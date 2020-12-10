@@ -54,8 +54,8 @@ class JSBridge {
 
 
     private void dealResponse(String response, String callbackId) {
-        if(!TextUtils.isEmpty(response)){
-            String trigger = "javascript:" + "dj.callback" + "(" + response + ","+ callbackId +")";
+        if(!TextUtils.isEmpty(response) && !TextUtils.isEmpty(callbackId)){
+            String trigger = "javascript:" + "dj.callback" + "(" + response + ",'"+ callbackId +"')";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 mWebView.evaluateJavascript(trigger, null);
             } else {

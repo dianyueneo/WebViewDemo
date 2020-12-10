@@ -49,7 +49,6 @@ public class MainProcessCommands extends Commands {
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.i("WebViewManager", "pay 收到响应");
                 String result = intent.getStringExtra("result");
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("result", result);
