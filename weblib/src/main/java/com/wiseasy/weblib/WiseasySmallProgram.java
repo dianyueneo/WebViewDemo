@@ -50,7 +50,7 @@ public class WiseasySmallProgram {
     }
 
     /**
-     * 启动小程序
+     * 启动小程序，默认有缓存
      * @param context
      * @param url
      * @param title

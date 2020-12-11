@@ -27,6 +27,13 @@ public class SystemInfoUtil {
     }
 
     /**
+     * 获取当前进程的名称
+     */
+    public static String getCurrentProcessName(Context context){
+        return getProcessName(context, android.os.Process.myPid());
+    }
+
+    /**
      * 获取当前进程名
      * @param context
      * @return 进程名

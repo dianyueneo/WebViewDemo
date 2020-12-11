@@ -16,6 +16,7 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+import com.wiseasy.weblib.utils.SystemInfoUtil;
 
 class X5WebView extends WebView {
 
@@ -102,6 +103,15 @@ class X5WebView extends WebView {
             }
         });
 
+        // 安卓9.0后不允许多进程使用同一个数据目录，需设置前缀来区分
+        setDataDirectorySuffix(SystemInfoUtil.getCurrentProcessName(getContext()));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }else {
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
     }
 
     private void initClient(){
@@ -150,19 +160,11 @@ class X5WebView extends WebView {
     public void attach(Activity activity) {
         ((MutableContextWrapper) this.getContext()).setBaseContext(activity);
 
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            }else {
-                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
-        } catch (Exception e) {
-        }
-
         initClient();
 
         registerJSApi();
     }
+
 
     public void detach() {
         MutableContextWrapper ct = (MutableContextWrapper) this.getContext();

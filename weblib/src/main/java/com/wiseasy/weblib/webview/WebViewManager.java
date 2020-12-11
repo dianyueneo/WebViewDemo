@@ -83,6 +83,10 @@ class WebViewManager {
         long n = System.currentTimeMillis();
         Log.i("WebViewManager", "testWebViewFirstInit use time:" + (n-p));
 
+        for (String s : maps.keySet()) {
+            Log.i("WebViewManager", "webview in pool : " + s);
+        }
+
         return maps.get(url);
     }
 

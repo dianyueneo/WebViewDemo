@@ -1,45 +1,24 @@
 package com.wiseasy.weblib.webview;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.tencent.smtt.export.external.interfaces.WebResourceError;
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import com.wiseasy.weblib.R;
 
 import java.net.URL;
 
 public class X5WebViewActivity extends AppCompatActivity{
 
-    private static final int Msg_What_loadWebView = 1;
-
-    private X5WebView mWebView;
     private URL mIntentUrl;
-    private ViewGroup mViewParent;
     private boolean cache;
 
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            switch (msg.what){
-                case Msg_What_loadWebView:
-                    loadWebView();
-                    break;
-            }
-        }
-    };
 
 
     @Override
@@ -68,7 +47,7 @@ public class X5WebViewActivity extends AppCompatActivity{
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(name);
 
-        mViewParent = findViewById(R.id.webView1);
+        ViewGroup mViewParent = findViewById(R.id.webView1);
         findViewById(R.id.ll_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,35 +55,18 @@ public class X5WebViewActivity extends AppCompatActivity{
             }
         });
 
-        mWebView = WebViewManager.getInstance().get(this.getApplication(), mIntentUrl.toString());
-        mWebView.attach(this);
+        View loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 
-        mWebView.setOnPageFinishedListener(new X5WebView.OnPageFinishedListener() {
-            @Override
-            public void onPageFinished() {
-                loadWebView();
-            }
-        });
 
-        mWebView.loadUrl(mIntentUrl.toString());
+        new AgentWebView.Builder()
+                .with(this)
+                .setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                .setWebViewParent(mViewParent)
+                .setLoadingView(loadingView)
+                .setUseCache(cache)
+                .load(mIntentUrl.toString());
 
     }
 
-
-    private void loadWebView(){
-        mViewParent.removeAllViews();
-        mViewParent.addView(mWebView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mWebView.detach();
-        if(!cache){
-            mWebView.reset();
-        }
-        Log.i("WebViewManager", "X5WebViewActivity onDestroy "+ X5WebViewActivity.this);
-    }
 
 }
